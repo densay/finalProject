@@ -1,0 +1,135 @@
+import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Iterator;
+
+/**
+ * An extended Adjacency Matrix graph implementation.  Complete this template for the exam.
+ */
+public class AdjMatGraphPlus<T> extends AdjMatGraph<T> implements GraphPlus<T> {
+ 
+ /** DO NOT MODIFY THE FIRST THREE METHODS **************************
+  * The methods you will implement follow below.
+  */
+
+ /**
+  * Construct an empty graph.
+  */
+ public AdjMatGraphPlus() {
+  super();
+ }
+ 
+ /**
+  * Construct a graph with the same vertices and edges as the given original.
+  * @param original
+  */
+ public AdjMatGraphPlus(AdjMatGraph<T> original) {
+  super(original);
+ }
+ 
+ /**
+  * Read a TGF file and create an AdjMatGraphPlus<String> from it.
+  * @param tgfFile - the TGF file to read
+  * @return a graph created from the TGF file
+  * @throws FileNotFoundException if TGF file is not found.
+  */
+ public static AdjMatGraphPlus<String> fromTGF(String tgfFile) throws FileNotFoundException {
+  AdjMatGraphPlus<String> g = new AdjMatGraphPlus<String>();
+  AdjMatGraph.loadTGF(tgfFile, g);
+  return g;
+ }
+ 
+
+ 
+ /**** IMPLEMENT THE METHODS BELOW *********************************
+  * Replace "throw new UnsupportedOperationException();" with
+  * a working implementation.
+  ******************************************************************/
+ 
+
+ 
+ public GraphPlus<T> clone() {
+  AdjMatGraphPlus<T> clone = new AdjMatGraphPlus<T>();
+  Iterator<T> vertices = super.iterator();
+  //adds vertices to clone graph
+    while(vertices.hasNext()){
+      T currentVertex = vertices.next();
+      clone.addVertex(currentVertex);      
+    }
+    while(vertices.hasNext()){
+      T currentVertex = vertices.next();
+      //uses current vertex since both hold same value
+      LinkedList<T> connectedTo = super.getSuccessors(currentVertex);
+      while(!connectedTo.isEmpty()){
+        T successor = connectedTo.pop();
+        clone.addArc(currentVertex, successor);
+      }
+    
+    }
+    return clone;
+ }
+
+ public boolean isSink(T vertex) {
+   
+   if (super.getIndex(vertex)==NOT_FOUND) {
+   throw new IllegalArgumentException("Vertex is not in graph");
+   }
+   //if size of linked list dependent on number of successors
+   return ((super.getSuccessors(vertex)).size()==0);
+  
+ }
+
+ public LinkedList<T> allSinks() {
+   Iterator<T> vertices = super.iterator();
+   LinkedList<T> sinks = new LinkedList<T>();
+   while(vertices.hasNext()){
+     T currentVertex = vertices.next();
+     if(isSink(currentVertex)){
+      sinks.add(currentVertex); 
+     }
+   }
+   return sinks;
+   
+ }
+
+ public boolean isSource(T vertex) {
+   if (super.getIndex(vertex)==NOT_FOUND) {
+     throw new IllegalArgumentException("Vertex is not in graph");
+   }
+   //if size of linked list dependent on number of successors
+   return ((super.getPredecessors(vertex)).size()==0);
+ 
+ }
+
+ public LinkedList<T> allSources() {
+  Iterator<T> vertices = super.iterator();
+   LinkedList<T> sources = new LinkedList<T>();
+   while(vertices.hasNext()){
+     T currentVertex = vertices.next();
+     if(isSource(currentVertex)){
+      sources.add(currentVertex); 
+     }
+   }
+   return sources;
+ }
+
+ public boolean isIsolated(T vertex) {
+   if (super.getIndex(vertex)==NOT_FOUND) {
+     throw new IllegalArgumentException("Vertex is not in graph");
+   }
+   return (isSink(vertex) && isSource(vertex));
+  
+ }
+
+ public LinkedList<T> listByPriority() throws GraphCycleException {
+  throw new UnsupportedOperationException();
+ }
+
+ public LinkedList<T> dfsTraversal(T startVertex) {
+  throw new UnsupportedOperationException();
+ }
+
+ public LinkedList<T> bfsTraversal(T startVertex) {
+  throw new UnsupportedOperationException();
+ }
+
+}
