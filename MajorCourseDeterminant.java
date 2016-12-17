@@ -1,7 +1,12 @@
 import java.util.*;
 import javafoundations.*;
+import java.io.*;
 
 public class MajorCourseDeterminant {
+  LinkedList<String> courses;
+  public MajorCourseDeterminant(LinkedList coursesTaken){
+    this.courses = coursesTaken;
+  }
   
   public static boolean mathMajor(LinkedList<String> math) {
     selectionSort(math);
@@ -135,7 +140,15 @@ public class MajorCourseDeterminant {
        data.remove(index2);
        data.add(index2, index1Data);
    }
-  
+  public String nextCourse(CourseTrajectories<String> major)throws GraphCycleException{
+    CourseTrajectories<String> temp = major;
+
+    LinkedList <String> graphByP = temp.listByPriority();
+    int i = graphByP.indexOf(courses.getLast());
+    System.out.println(graphByP.toString());
+    
+   return graphByP.get(i+1);
+  }
   public static void main(String [] args) {
     
     LinkedList<String> math = new LinkedList<String>();
