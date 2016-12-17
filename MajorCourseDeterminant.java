@@ -145,17 +145,13 @@ public class MajorCourseDeterminant {
     }
  
   
-  public double mathMajor(LinkedList<String> math) {
+ public double mathMajor(LinkedList<String> math) {
     selectionSort(math);
     
     int startingIndex = -1; 
+    int numOfRequiredCourses = 0;
+    int numOfAdditional300s = 2;
     int counter = 0;
-    int maxNumOfCompletedRequiredCourses = 0;
-    int numOfCompletedElectives = 0;
-    int totalOfCompletedCourse = 0;
-    
-    System.out.println(math);
-    System.out.println(requiredMathCourses);
     
     // find the first required courses the user has taken
     // this take in account if the user skipped required intro classes
@@ -166,21 +162,34 @@ public class MajorCourseDeterminant {
         break;
       }
     }
+    
     System.out.println(startingIndex);
-    // counts the number of required courses that the user has completed
-    if(startingIndex != -1) {
-      System.out.println("Check");
-      maxNumOfCompletedRequiredCourses = requiredMathCourses.size() - startingIndex; 
-      for(int i = requiredMathCourses.size()-1; i >= startingIndex; i--) {
-        System.out.println(i);
+    numOfRequiredCourses = requiredMathCourses.size() - startingIndex; // calculates the number of required courses
+    
+    // counts the number of required courses that the user has complete
+    for(int i = requiredMathCourses.size()-1; i >= startingIndex; i--) {
         if(math.contains(requiredMathCourses.get(i))) {
-          System.out.println("check again");
           counter++; // counts the number of required courses completed 
           math.remove(requiredMathCourses.get(i)); // removes the required courses the user has completed
         }
-      } 
+      }
+    
+    System.out.println(counter);
+    // counts additional electives taken
+    double maxOfEachLevel = numMathCoursesForMajor - numOfRequiredCourses - numOfAdditional300s; //maximum of number of 200/300 courses a user can take that will count towards the major
+    System.out.println(maxOfEachLevel);
+    LinkedStack<String> num200s = new LinkedStack<String>();
+    LinkedStack<String> num300s = new LinkedStack<String>();
+    for(int i = 0; i < math.size(); i++) {
+      if(math.get(i).contains("MATH 2") && num200s.size() < maxOfEachLevel) {
+        num200s.push(math.get(i));
+      }
+      else if(math.get(i).contains("MATH 3") && num300s.size() < maxOfEachLevel) {
+        num300s.push(math.get(i));
+      }  
     }
-    return counter;
+    System.out.println(counter + num200s.size() + num300s.size());
+    return (counter + num200s.size() + num300s.size())/numMathCoursesForMajor;
   }
     
     
