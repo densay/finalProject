@@ -60,25 +60,28 @@ public class Course extends JPanel {
   
   private class ButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent event) {
-      //int counter = 0;
       completedCourses = new LinkedList<String>();
       if (event.getSource() == nextButton) {
         LinkedList<String> first = oneHundred.getTakenCourses();
         LinkedList<String> second = twoHundred.getTakenCourses();
         LinkedList<String> third = threeHundred.getTakenCourses();
         for (int i=0; i<first.size(); i++){
-          completedCourses.add(first.get(i));
+          String[] class1 = first.get(i).split(":");
+          completedCourses.add(class1[0]);
         }
         for (int j=0; j<second.size(); j++) {
-          completedCourses.add(second.get(j));
+          String[] class2 = second.get(j).split(":");
+          completedCourses.add(class2[0]);
         }
         for (int k=0; k<third.size(); k++) {
-          completedCourses.add(third.get(k));
+          String[] class3 = third.get(k).split(":");
+          completedCourses.add(class3[0]);
         }
         for (int t=0; t<completedCourses.size(); t++) {
         System.out.println(completedCourses.get(t));
         }
       }
+      // DO STUFF WITH OTHER METHODS:
     }
   }
   
