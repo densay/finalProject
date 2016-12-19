@@ -8,36 +8,26 @@ import java.lang.*;
 public class MajorCourseDeterminant {
   
   // instance variables
-  private LinkedList<String> allCSCourses;
-  private LinkedList<String> allMathCourses;
-  private LinkedList<String> allMASCourses;
-  private LinkedList<String> requiredCSCourses;
-  private LinkedList<String> requiredMathCourses;
+  private LinkedList<String> requiredCourses; // for math and cs
+
   private LinkedList<String> requiredMASIntroCourses;
   private LinkedList<String> requiredMASArtCourses;
   private LinkedList<String> requiredMASCSCourses;
+  
+  private LinkedList<String> userCourses;
+  
   private final double numCSCoursesForMajor = 11.0;
   private final double numMathCoursesForMajor = 10.0;
   private final double numMASCoursesForMajor = 12.0;
   
-  // constructor
-  public MajorCourseDeterminant() {
-    // intializing linkedlists
-    allCSCourses = new LinkedList<String>();
-    allMathCourses = new LinkedList<String>();
-    allMASCourses = new LinkedList<String>();
-    requiredCSCourses = new LinkedList<String>();
-    requiredMathCourses = new LinkedList<String>();
+  // constructor for math and cs
+  public MajorCourseDeterminant(CourseTrajectories<String> major, LinkedList<String> completedCoursesByMajor) {
+    requiredCourses = new LinkedList<String>();
     requiredMASIntroCourses = new LinkedList<String>();
     requiredMASArtCourses = new LinkedList<String>();
     requiredMASCSCourses = new LinkedList<String>();
-
-    
-    // filling linkedlist
-    allCS("CS.txt", "CSRequired.txt");
-    allMath("Math.txt", "MathRequired.txt");
-    allMAS("MAS.txt", "MASRequired.txt", "MASCS.txt", "MASARTS.txt");
   }
+  
   
   // getter methods
   public LinkedList<String> getAllCSCourses() {
@@ -52,84 +42,26 @@ public class MajorCourseDeterminant {
     return allMASCourses;
   }
   
-  // fills CS linkedlists from written text files
-  public void allCS(String coursesFile, String requiredCoursesFile) {
-   
-    // fills allCSCourses
-    try {
-      Scanner scan = new Scanner(new File(coursesFile));
-      while(scan.hasNext()) {
-        String name = scan.nextLine();
-        allCSCourses.add(name);
-      }
-      selectionSort(allCSCourses); // sorts CSCourses by number
-    }
-    catch (FileNotFoundException e) {
-      System.out.println ("The file " + coursesFile + " was not found.");
-    }
-    
-    // fills requiredCSCourses
+  // fills CS or Math linkedlists from written text files
+  public void allCSMath(String requiredCoursesFile) {
+
+    // fills requiredCourses
     try {
       Scanner scan = new Scanner(new File(requiredCoursesFile));
       while(scan.hasNext()) {
         String name = scan.nextLine();
-        requiredCSCourses.add(name);
+        requiredCourses.add(name);
       }
-      selectionSort(requiredCSCourses); // sorts requiredCSCourses by number
+      selectionSort(requiredCourses); // sorts requiredCourses by number
     }
       catch (FileNotFoundException e) {
       System.out.println ("The file " + requiredCoursesFile + " was not found.");
     }
     }
   
-  // fills Math linkedlists from written text files
-  public void allMath(String coursesFile, String requiredCoursesFile) {
-    
-    // fills allMathCourses
-    try {
-      Scanner scan = new Scanner(new File(coursesFile));
-      while(scan.hasNext()) {
-        String name = scan.nextLine();
-        String[] nameArray = name.split(":");
-        allMathCourses.add(nameArray[0]);
-      }
-      selectionSort(allMathCourses); // sorts mathCourses by number
-    }
-    catch (FileNotFoundException e) {
-      System.out.println ("The file " + coursesFile + " was not found.");
-    }
-    
-    // fills requiredMathCourses
-    try {
-      Scanner scan = new Scanner(new File(requiredCoursesFile));
-      while(scan.hasNext()) {
-        String name = scan.nextLine();
-        String[] nameArray = name.split(":");
-        requiredMathCourses.add(nameArray[0]);
-      }
-      selectionSort(requiredMathCourses); // sorts requiredMathCourses by number
-    }
-      catch (FileNotFoundException e) {
-      System.out.println ("The file " + requiredCoursesFile + " was not found.");
-    }
-    }
   
   // fills MAS linkedlists from written text files
-  public void allMAS(String coursesFile, String introCoursesFile, String csCourses, String artCourses) {
-    
-    // fills allMASCourses
-    try {
-      Scanner scan = new Scanner(new File(coursesFile));
-      while(scan.hasNext()) {
-        String name = scan.nextLine();
-        String[] nameArray = name.split(":");
-        allMASCourses.add(nameArray[0]);
-      }
-      selectionSort(allMASCourses); // sorts courses by number
-    }
-    catch (FileNotFoundException e) {
-      System.out.println ("The file " + coursesFile + " was not found.");
-    }
+  public void allMAS(String introCoursesFile, String csCourses, String artCourses) {
     
     // fills introMASCourses
     try {
@@ -262,114 +194,7 @@ public class MajorCourseDeterminant {
     }
     return (intro + num300s + csCourses + artCourses)/numMASCoursesForMajor;
    }
-//    
-//    if((intro + artCourses + csCourses > numMASCoursesForMajor)
-//    
-//    // local variables
-//    int numArt100 = 0; // maximum is 2
-//    int numArtHistory100 = 0; // maximum is 2
-//    int numCS100 = 0; // maximum is 2
-//    int numArt = 0; // maximum is 5
-//    int numArtHistory = 0; // maxiumum is 2
-//    int numCS = 0; // maximum is 5
-//    int num300s = 0;
-//
-//    
-//    for(int i = 0; i < mas.size(); i++) {
-//      String course = math.get(i);
-//      if(course.contains("ARTH 1") || course.contains("CAMS 1")) {
-//        numArtHistory100++;
-//      }
-//      else if(course.contains("ARTS")) {
-//        if(course.contains(" 1") && numArt < 2) {
-//          numArt100++;
-//        }
-//        else if(course.contains(" 3")) {
-//          num300s++;
-//        }
-//        else {
-//          numArt++;
-//        }
-//      }
-//        else if(course.contains("CS")) {
-//        if(course.contains(" 1") && numCS < 2) {
-//          numCS100++;
-//        }
-//        else if(course.contains(" 3")) {
-//          num300s++;
-//        }
-//        else {
-//          numCS++;
-//        }
-//      }
-//    }
-//    
-//    int totalCoursesTaken =  numArt100 + numArtHistory100 + numCS100 + numArt + numArtHistory + numCS + num300s;
-//    if(totalCoursesTaken > 12
-//    
-//    
-//    // local variables
-//    int startingIndex = -1; 
-//    int numOfRequiredCourses = 0;
-//    int numOfAdditional300s = 2;
-//    int numOfRequiredElective = 3;
-//    int counter = 0;
-//    LinkedList<String> numArts = new LinkedList<String>();
-//    LinkedList<String> numCS = new LinkedList<String>();
-//    LinkedList<String> numArtHistory = new LinkedList<String>();
-//    LinkedStack<String> num300s = new LinkedStack<String>();
-//    
-//    for(int i = 0; i < mas.size(); i++) {
-//      if(mas.get(i).contains("CS")) {
-//        numCS.add(mas.get(i));
-//      }
-//      else if(mas.get(i).contains("ARTS")) {
-//        numArts.add(mas.get(i));
-//      }
-//      else if(mas.get(i).contains("ARTH") || mas.get(i).contains("CAM")) {
-//        numArtHistory.add(mas.get(i));
-//      }
-//    }
-//    
-//    
-//    
-//    
-//      // checks if the user has taken an inductory art classes
-//      // at most 2 intro arts can count towards the major
-//      for(int i = 0; i < requiredMASArtCourses.size(); i++) {
-//        if(math.contains(requiredMASArtCourses.get(i)) && num100s.size() < 2) {
-//          num100s.push(requiredMASArtCourses.get(i));
-//          math.remove(requiredMASArtCourses.get(i));
-//        }
-//      }
-//      
-//      // checks if the user has taken an inductory art history/cams classes
-//      for(int i = 0; i < requiredMASArtHistoryCourses.size(); i++) {
-//        if(math.contains(requiredMASArtHistoryCourses.get(i))) {
-//          num100s.push(requiredMASArtHistoryCourses.get(i));
-//          math.remove(requiredMASArtHistoryCourses.get(i));
-//        }
-//      }
-//      
-//      // checks if the user has taken an inductory cs classes
-//      for(int i = 0; i < requiredMASCSCourses.size(); i++) {
-//        if(math.contains(requiredMASCSCourses.get(i)) && num100s.size() < 4) {
-//          num100s.push(requiredMASCSCourses.get(i));
-//          math.remove(requiredMASCSCourses.get(i));
-//        }
-//      }
-//      
-//      numOfRequiredCourses = numMASCoursesForMajor - num100s.size() - numOfAdditional300s
-//      // checks for taken electives
-//      for(int i = 0; i < mas.size(); i++) {
-//        if(mas.get(i).contains("CS 1") && {
-//          numCS.add(mas.get(i));
-//        }
-//      }
-//  
-  
-  
-    
+
   public void selectionSort (LinkedList<String> data) {
       int min;
       for (int index = 0; index < data.size()-1; index++) {
@@ -409,7 +234,7 @@ public class MajorCourseDeterminant {
     }else if(major.getMajorName().equals("CS")){
       req = requiredCSCourses;
     }else if(major.getMajorName().equals("MAS")){
-      req = requiredMASCourses;
+      req = requiredMASIntroCourses;
     }
 
     
@@ -438,7 +263,6 @@ public class MajorCourseDeterminant {
     return course;
   }
   
-}
   
   public static void main(String [] args) {
     
