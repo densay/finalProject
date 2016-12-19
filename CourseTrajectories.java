@@ -1,8 +1,3 @@
-/*
- * Final Project
- * 
- */
-
 import java.io.*;
 import java.util.*;
 import java.util.Scanner;
@@ -10,15 +5,17 @@ import javafoundations.*;
 
 public class CourseTrajectories<T> {
   AdjMatGraphPlus<String> graph;
-  
-  public CourseTrajectories() {
+  String major;
+  public CourseTrajectories(String major) {
    graph = new AdjMatGraphPlus<String>();
+   this.major = major;
   }
   
-  public CourseTrajectories(String tgfFile) throws FileNotFoundException {
+  public CourseTrajectories(String tgfFile, String major) throws FileNotFoundException {
     graph = new AdjMatGraphPlus<String>();
     //tgfFile = (T)tgfFile;
     graph = graph.fromTGF(tgfFile);
+    this.major = major;
   }
     
    /** Returns true if this graph is empty, false otherwise. */
@@ -27,31 +24,18 @@ public class CourseTrajectories<T> {
   }
    
    /** Returns the number of vertices in this graph. */
-  public int n() {
+  public int numberOfCourses() {
     return graph.n();
   }
 
    /** Returns the number of arcs in this graph. */
-  public int m() {
+  public int numOfDependecies() {
     return graph.m();
   }
    
    /** Returns true iff a directed edge exists b/w given vertices */
-  public boolean isArc (String vertex1, String vertex2) {
+  public boolean isArc(String vertex1, String vertex2) {
     return graph.isArc(vertex1, vertex2);
-  }
-
-   /** Returns true iff an edge exists between two given vertices
-   * which means that two corresponding arcs exist in the graph */
-  public boolean isEdge (String vertex1, String vertex2){
-    return graph.isEdge(vertex1, vertex2);
-  }
-
-   /** Returns true IFF the graph is undirected, that is, for every
-   * pair of nodes i,j for which there is an arc, the opposite arc
-   * is also present in the graph.  */
-  public boolean isUndirected() {
-    return graph.isUndirected();
   }
      
    /** Adds a vertex to this graph, associating object with vertex.
@@ -118,12 +102,23 @@ public class CourseTrajectories<T> {
      return graph.fromTGF(tgfFile);
    }
 
-
+   public boolean containsCourse(String vertex) {
+     return graph.containsVertex(vertex);
+   }
+   public String getMajorName(){
+    return major; 
+   }
+   //ALL SOURCES
+  public LinkedList<String> allSources() {
+    return graph.allSources();
+  }
    /** Returns a string representation of the adjacency matrix. */
   public String toString() {
     
     return graph.toString();
           
   }
-   
-}
+  
+  public boolean isSource(String vertex) {
+   return graph.isSource(vertex); 
+  }
