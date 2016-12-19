@@ -91,8 +91,10 @@ public class CourseNamePanel extends JPanel{
   
   public LinkedList<String> getTakenCourses() {
     LinkedList<String> taken = new LinkedList<String>();
-    String courseNames = takenCourses.getText();
-    taken.add(courseNames);
+    //String courseNames = takenCourses.getText();
+    for (String courseNames : takenCourses.getText().split("\n")) {
+      taken.add(courseNames);
+    }
 
     return taken;
   }
