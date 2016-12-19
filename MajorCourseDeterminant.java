@@ -29,19 +29,6 @@ public class MajorCourseDeterminant {
   }
   
   
-  // getter methods
-  public LinkedList<String> getAllCSCourses() {
-    return allCSCourses;
-  }
-  
-  public LinkedList<String> getAllMathCourses() {
-    return allMathCourses;
-  }
-  
-  public LinkedList<String> getAllMASCourses() {
-    return allMASCourses;
-  }
-  
   // fills CS or Math linkedlists from written text files
   public void allCSMath(String requiredCoursesFile) {
 
@@ -123,20 +110,20 @@ public class MajorCourseDeterminant {
     // find the first required courses the user has taken
     // this take in account if the user skipped required intro classes;
     for(int i = 0; i < math.size(); i++) {
-      if(requiredMathCourses.contains(math.get(i))) {
-        startingIndex = requiredMathCourses.indexOf(math.get(i)); // index of course in required list
+      if(requiredCourses.contains(math.get(i))) {
+        startingIndex = requiredCourses.indexOf(math.get(i)); // index of course in required list
         break;
       }
     }
     
-    numOfRequiredCourses = requiredMathCourses.size() - startingIndex; // calculates the number of required courses
+    numOfRequiredCourses = requiredCourses.size() - startingIndex; // calculates the number of required courses
                                                                        // that the user must take for the major
     
     // counts the number of required courses that the user has completed
-    for(int i = requiredMathCourses.size()-1; i >= startingIndex; i--) {
-        if(math.contains(requiredMathCourses.get(i))) {
+    for(int i = requiredCourses.size()-1; i >= startingIndex; i--) {
+        if(math.contains(requiredCourses.get(i))) {
           counter++; 
-          math.remove(requiredMathCourses.get(i)); // removes the required courses the user has completed
+          math.remove(requiredCourses.get(i)); // removes the required courses the user has completed
         }
       }
     
@@ -229,10 +216,10 @@ public class MajorCourseDeterminant {
     
     
     if(major.getMajorName().equals("MATH")){
-      req = requiredMathCourses;
+      req = requiredCourses;
       
     }else if(major.getMajorName().equals("CS")){
-      req = requiredCSCourses;
+      req = requiredCourses;
     }else if(major.getMajorName().equals("MAS")){
       req = requiredMASIntroCourses;
     }
@@ -264,28 +251,28 @@ public class MajorCourseDeterminant {
   }
   
   
-  public static void main(String [] args) {
-    
-    MajorCourseDeterminant mcd = new MajorCourseDeterminant();
-    
-    LinkedList<String> test = new LinkedList<String>();
-    test.add("CS 111");
-    test.add("CS 114");
-    test.add("CS 115");
-    test.add("CS 220");
-    test.add("CS 320");
-    test.add("ARTH 101");
-
-    
-    System.out.println(mcd.masMajor(test));
-//    System.out.println(mcd.getAllCSCourses());
-//    System.out.println(mcd.getRequiredCSCourses());
-//    System.out.println(mcd.getAllMathCourses());
-//    System.out.println(mcd.getRequiredMathCourses());
-//    System.out.println(mcd.getAllMASCourses());
-//    System.out.println(mcd.getRequiredMASCourses());
+//  public static void main(String [] args) {
 //    
-    
-
-  }
+//    MajorCourseDeterminant mcd = new MajorCourseDeterminant();
+//    
+//    LinkedList<String> test = new LinkedList<String>();
+//    test.add("CS 111");
+//    test.add("CS 114");
+//    test.add("CS 115");
+//    test.add("CS 220");
+//    test.add("CS 320");
+//    test.add("ARTH 101");
+//
+//    
+//    System.out.println(mcd.masMajor(test));
+////    System.out.println(mcd.getAllCSCourses());
+////    System.out.println(mcd.getRequiredCSCourses());
+////    System.out.println(mcd.getAllMathCourses());
+////    System.out.println(mcd.getRequiredMathCourses());
+////    System.out.println(mcd.getAllMASCourses());
+////    System.out.println(mcd.getRequiredMASCourses());
+////    
+//    
+//
+//  }
   }
