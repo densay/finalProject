@@ -97,7 +97,7 @@ public class MajorCourseDeterminant {
       
     }
  
-  public double CSMajor (LinkedList<String> cs){
+   public double CSMajor (){
     double count = 0;
 
     int twoLevel= 0;
@@ -105,12 +105,12 @@ public class MajorCourseDeterminant {
     int math = 0;
     int reqUpLvl = 3;
     
-    if(!cs.contains("CS 111") && cs.contains("CS 230")){
+    if(!userCourses.contains("CS 111") && userCourses.contains("CS 230")){
        reqUpLvl = 4;
     }
     for(int i = 0; i< cs.size(); i++){
 
-      if(requiredCSCourses.contains(cs.get(i))){
+      if(requiredCourses.contains(cs.get(i))){
        count++;
       }else if(threeLevel + twoLevel< reqUpLvl){
         if (cs.get(i).contains("CS 3")){
@@ -118,7 +118,7 @@ public class MajorCourseDeterminant {
           count++;
         }
                         
-       }else if(cs.get(i).contains("CS 2") && !requiredCSCourses.contains(cs.get(i)) && twoLevel< reqUpLvl - 2){
+       }else if(cs.get(i).contains("CS 2") && !requiredCourses.contains(cs.get(i)) && twoLevel< reqUpLvl - 2){
         twoLevel++; 
         count++;
        }else if(math<1){
@@ -128,6 +128,7 @@ public class MajorCourseDeterminant {
       }
       return (count/numCSCoursesForMajor);
     }
+  
   public double mathMajor(LinkedList<String> math) {
     
     selectionSort(math); // sorts the courses in ascending order
