@@ -392,14 +392,52 @@ public class MajorCourseDeterminant {
        data.add(index2, index1Data);
    }
   
-  public String nextCourse(CourseTrajectories<String> major)throws GraphCycleException{
-    CourseTrajectories<String> temp = major;
-
-    LinkedList <String> graphByP = temp.listByPriority();
-    int i = graphByP.indexOf(allCSCourses.getLast());
-    System.out.println(graphByP.toString());
+  
+    public String nextCourse(CourseTrajectories<String> major, LinkedList<String> selected)throws GraphCycleException{
+   
+    LinkedList<String> next = new LinkedList<String>();
+    String highReq = "";
     
-   return graphByP.get(i+1);
+    LinkedList<String> req = new LinkedList<String>();
+    String course= "";
+    
+    
+    
+    if(major.getMajorName().equals("MATH")){
+      req = requiredMathCourses;
+      
+    }else if(major.getMajorName().equals("CS")){
+      req = requiredCSCourses;
+    }else if(major.getMajorName().equals("MAS")){
+      req = requiredMASCourses;
+    }
+
+    
+    while(!selected.isEmpty()){
+     String current = selected.removeFirst();
+     
+     if(req.contains(current)){
+      req.remove(current); 
+     }
+     
+     major.removeVertex(current);
+    }
+    
+    if(!req.isEmpty()){
+     LinkedList<String> canTake = major.allSources();
+     for(int i = 0; i< canTake.size(); i++){
+       if(req.contains(canTake.get(i))){
+        course = canTake.get(i);
+        break;
+       }
+     }
+     
+    }else{
+     return course = major.allSources().pop();
+    }
+    return course;
+  }
+  
 }
   
   public static void main(String [] args) {
