@@ -8,8 +8,9 @@ import java.lang.*;
 public class MajorCourseDeterminant {
   
   // instance variables
+  
   private LinkedList<String> requiredCourses; // for math and cs
-
+  private CourseTrajectories<String> major;
   private LinkedList<String> requiredMASIntroCourses;
   private LinkedList<String> requiredMASArtCourses;
   private LinkedList<String> requiredMASCSCourses;
@@ -22,6 +23,8 @@ public class MajorCourseDeterminant {
   
   // constructor for math and cs
   public MajorCourseDeterminant(CourseTrajectories<String> major, LinkedList<String> completedCoursesByMajor) {
+    this.major = major;
+    userCourses = completedCoursesByMajor;
     requiredCourses = new LinkedList<String>();
     requiredMASIntroCourses = new LinkedList<String>();
     requiredMASArtCourses = new LinkedList<String>();
@@ -205,27 +208,19 @@ public class MajorCourseDeterminant {
    }
   
   
-    public String nextCourse(CourseTrajectories<String> major, LinkedList<String> selected)throws GraphCycleException{
+   public String nextCourse()throws GraphCycleException{
    
     LinkedList<String> next = new LinkedList<String>();
     String highReq = "";
     
-    LinkedList<String> req = new LinkedList<String>();
+    LinkedList<String> req = requiredCourses;//both temp
+    LinkedList<String> selected = userCourses;//both temp
     String course= "";
     
+     req = adjReqMet(req, selected);//updates to check if any courses selected were skipped
+     //handles accordingly
     
-    
-    if(major.getMajorName().equals("MATH")){
-      req = requiredCourses;
-      
-    }else if(major.getMajorName().equals("CS")){
-      req = requiredCourses;
-    }else if(major.getMajorName().equals("MAS")){
-      req = requiredMASIntroCourses;
-    }
-
-    
-    while(!selected.isEmpty()){
+    for(!selected.isEmpty()){
      String current = selected.removeFirst();
      
      if(req.contains(current)){
@@ -245,34 +240,39 @@ public class MajorCourseDeterminant {
      }
      
     }else{
-     return course = major.allSources().pop();
+     course = major.allSources().pop();
     }
     return course;
   }
-  
-  
-//  public static void main(String [] args) {
-//    
-//    MajorCourseDeterminant mcd = new MajorCourseDeterminant();
-//    
-//    LinkedList<String> test = new LinkedList<String>();
-//    test.add("CS 111");
-//    test.add("CS 114");
-//    test.add("CS 115");
-//    test.add("CS 220");
-//    test.add("CS 320");
-//    test.add("ARTH 101");
-//
-//    
-//    System.out.println(mcd.masMajor(test));
-////    System.out.println(mcd.getAllCSCourses());
-////    System.out.println(mcd.getRequiredCSCourses());
-////    System.out.println(mcd.getAllMathCourses());
-////    System.out.println(mcd.getRequiredMathCourses());
-////    System.out.println(mcd.getAllMASCourses());
-////    System.out.println(mcd.getRequiredMASCourses());
-////    
-//    
-//
-//  }
+
+  public LinkedList<String> adjReqMet(LinkedList<String> req, LinkedList<String> selected){
+    LinkedList<String> adjustedReq = req;
+    for(int i = 0; i<completedCourses.size(); i++){
+      LinkedList<String> preReq = (major.getPredecessors(completedCourses.get(i)));//gets predecessors of requirement if it's skipped(for special cases)
+      if(!preReq.isEmpty()){
+        for(int i =0; i<requiredCourses.size(); i++){
+          if(requiredCourses.contains(preReq.get(i)) && !selected.contains(preReq.get(i))){
+           major.removeVertex(preReq.get(i));
+           requiredCourses.remove(preReq.get(i));
+          }
+            
+        }
+      }
+    }
+    return adjustedReq;
+  }
+  public static void main(String [] args) {
+    
+    MajorCourseDeterminant mcd = new MajorCourseDeterminant();
+    
+    LinkedList<String> test = new LinkedList<String>();
+    test.add("CS 111");
+    test.add("CS 114");
+    test.add("CS 115");
+    test.add("CS 220");
+    test.add("CS 320");
+    test.add("ARTH 101");
+
+
+  }
   }
