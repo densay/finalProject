@@ -25,17 +25,17 @@ public class Driver {
     return result;
   }
   
-  public static void main(String [] args) {
+  public static void main(String [] args) throws FileNotFoundException, GraphCycleException{
     
   
-  // calls the GUI
-    AllCourses allCourses = new AllCourses("ALL100.txt", "ALL200.txt", "ALL300.txt"); 
-    JFrame frame = new JFrame("Choose your Major");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.getContentPane().add(allCourses);
-    frame.pack();
-    frame.setSize(1200, 600);
-    frame.setVisible(true);
+//  // calls the GUI
+//    AllCourses allCourses = new AllCourses("ALL100.txt", "ALL200.txt", "ALL300.txt"); 
+//    JFrame frame = new JFrame("Choose your Major");
+//    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//    frame.getContentPane().add(allCourses);
+//    frame.pack();
+//    frame.setSize(1200, 600);
+//    frame.setVisible(true);
     
     // creates a linked list containing all the courses the use has taken
     LinkedList<String> selected = userCourses("SelectedCourses.txt");
@@ -57,15 +57,25 @@ public class Driver {
     LinkedList<String> userMathCourses = math.majorCompletedCourses();
     LinkedList<String> userMASCourses = mas.majorCompletedCourses();
     
+    System.out.println(userCSCourses);
+    System.out.println(userMathCourses);
+    System.out.println(userMASCourses);
+      
     MajorCourseDeterminant mcdCS = new MajorCourseDeterminant(csCT, userCSCourses);
-    MajorCourseDeterminant mcdMath = new MajorCourseDeterminant(mathCT, userCSCourses);
-    MajorCourseDeterminant mcdMAS = new MajorCourseDeterminant(masCT, userCSCourses);
+    MajorCourseDeterminant mcdMath = new MajorCourseDeterminant(mathCT, userMathCourses);
+    MajorCourseDeterminant mcdMAS = new MajorCourseDeterminant(masCT, userMASCourses);
     
     mcdCS.allCSMath("CSRequired.txt");
     mcdMath.allCSMath("MathRequired.txt");
     mcdCS.allMAS("MASRequired.txt", "MASCS.txt", "MASARTS.txt");
     
-   // System.out.println(mcdMAS.masMajor(userMASCourses));
+   //System.out.println(mcdCS.CSMajor());
+   System.out.println(mcdMath.mathMajor(userMathCourses));
+   System.out.println(mcdMath.masMajor(userMASCourses));   
+   
+   System.out.println(mcdCS.nextCourse());
+   System.out.println(mcdMath.nextCourse());
+   System.out.println(mcdMAS.nextCourse());
     
       
   }
