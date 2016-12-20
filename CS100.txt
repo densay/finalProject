@@ -1,0 +1,5 @@
+CS 111: Programming and Problem Solving
+CS 112: Computation for the Sciences 
+CS 115: Computing for the Socio-Techno Web
+CS 117: Inventing Mobile Apps
+CS 125: (First Year Seminar) Brains, Minds, and Machines: The Science of Intelligence

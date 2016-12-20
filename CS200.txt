@@ -1,0 +1,14 @@
+CS 215: Multimedia Design and Programming
+CS 220: Human-Computer Interaction
+CS 230: Data Structures
+CS 231: Fundamental Algorithms
+CS 232: Artificial Intelligence
+CS 235: Languages and Automata
+CS 240: Machine Organization
+CS 242: Computer Networks
+CS 24902: (Topics) Front-End Web Development
+CS 24901: (Topics) Scientific and Parallel Computing
+CS 251: Programming Languages
+MATH 206: Linear Algebra
+MATH 225: Combinatorics and Graph Theory
+MATH 220: Probability and Elementary Statistics

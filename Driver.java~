@@ -6,13 +6,7 @@ import javax.swing.*;
 import java.util.*;
 import java.io.*;
 
-public class InformationDriver {
-  
-  LinkedList<String> selected; 
-  
-  public InformationDriver(String fileName) {
-    selected = userCourses(fileName);
-  }
+public class Driver {
   
   public static LinkedList<String> userCourses(String fileName) {
     LinkedList<String> result = new LinkedList<String>();
@@ -31,7 +25,22 @@ public class InformationDriver {
     return result;
   }
   
-  public void setUpGraph() {
+  public static void main(String [] args) {
+    
+  
+  // calls the GUI
+    AllCourses allCourses = new AllCourses("ALL100.txt", "ALL200.txt", "ALL300.txt"); 
+    JFrame frame = new JFrame("Choose your Major");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.getContentPane().add(allCourses);
+    frame.pack();
+    frame.setSize(1200, 600);
+    frame.setVisible(true);
+    
+    // creates a linked list containing all the courses the use has taken
+    LinkedList<String> selected = userCourses("SelectedCourses.txt");
+    
+    System.out.println(selected);
     
     // creates course trajectories objects for each major
     CourseTrajectories csCT = new CourseTrajectories("csCourses.tgf");
@@ -48,39 +57,16 @@ public class InformationDriver {
     LinkedList<String> userMathCourses = math.majorCompletedCourses();
     LinkedList<String> userMASCourses = mas.majorCompletedCourses();
     
-    // creates major course determinants
     MajorCourseDeterminant mcdCS = new MajorCourseDeterminant(csCT, userCSCourses);
-    MajorCourseDeterminant mcdMath = new MajorCourseDeterminant(mathCT, userMathCourses);
-    MajorCourseDeterminant mcdMAS = new MajorCourseDeterminant(masCT, userMASCourses);
+    MajorCourseDeterminant mcdMath = new MajorCourseDeterminant(mathCT, userCSCourses);
+    MajorCourseDeterminant mcdMAS = new MajorCourseDeterminant(masCT, userCSCourses);
     
     mcdCS.allCSMath("CSRequired.txt");
     mcdMath.allCSMath("MathRequired.txt");
-    mcdMAS.allMAS("MASRequired.txt", "MASCS.txt", "MASARTS.txt");
-
-  }
- 
-   public double [] percentages() {
-     double [] results = new double [2];
-     results[0] = mcdCS.csMajor();
-     results[1] = mcdMath.mathMajor(userMathCourses);
-     results[2] = mcdMath.masMajor(userMASCourses);
-     return results;
-   }
-   
-   public String [] nextCourse() {
-     double temp = percentages();
-     String [] results = new String [2];
-     if(temp[0] != 1.0) {
-       results[0] = mcdCS.nextCourseMathCS();
-     }
-     if(temp[0] != 1.0) {
-       results[1] = mcdMath.nextCourseMathCS();
-     }
-     if(temp[0] != 1.0) {
-       results[2] = mcdMAS.nextCourseMAS();
-     }
-     return results;
-   }
-
+    mcdCS.allMAS("MASRequired.txt", "MASCS.txt", "MASARTS.txt");
+    
+    System.out.println(mcdMAS.masMajor(userMASCourses));
+    
       
   }
+}

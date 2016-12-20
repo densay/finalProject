@@ -8,10 +8,14 @@ import java.io.*;
 
 public class InformationDriver {
   
-  LinkedList<String> selected; 
+  private LinkedList<String> selected; 
+  private double[] percentageResult;
+  private String[] nextCourses;
   
   public InformationDriver(String fileName) {
     selected = userCourses(fileName);
+    percentageResult = new double[2];
+    nextCourses = new String[2];
   }
   
   public static LinkedList<String> userCourses(String fileName) {
@@ -31,7 +35,7 @@ public class InformationDriver {
     return result;
   }
   
-  public void setUpGraph() {
+  public void setUpGraph() throws FileNotFoundException{
     
     // creates course trajectories objects for each major
     CourseTrajectories csCT = new CourseTrajectories("csCourses.tgf");
@@ -56,31 +60,28 @@ public class InformationDriver {
     mcdCS.allCSMath("CSRequired.txt");
     mcdMath.allCSMath("MathRequired.txt");
     mcdMAS.allMAS("MASRequired.txt", "MASCS.txt", "MASARTS.txt");
+    
+    percentageResult[0] = mcdCS.csMajor();
+    percentageResult[1] = mcdMath.mathMajor(userMathCourses);
+    percentageResult[2] = mcdMath.masMajor(userMASCourses);
+    
+     if(percentageResult[0] != 1.0) {
+       nextCourses[0] = mcdCS.nextCourseMathCS();
+     }
+     if(percentageResult[0] != 1.0) {
+       nextCourses[1] = mcdMath.nextCourseMathCS();
+     }
+     if(percentageResult[0] != 1.0) {
+       nextCourses[2] = mcdMAS.nextCourseMAS();
+     }
 
   }
  
    public double [] percentages() {
-     double [] results = new double [2];
-     results[0] = mcdCS.csMajor();
-     results[1] = mcdMath.mathMajor(userMathCourses);
-     results[2] = mcdMath.masMajor(userMASCourses);
-     return results;
+     return percentageResult;
    }
    
    public String [] nextCourse() {
-     double temp = percentages();
-     String [] results = new String [2];
-     if(temp[0] != 1.0) {
-       results[0] = mcdCS.nextCourseMathCS();
-     }
-     if(temp[0] != 1.0) {
-       results[1] = mcdMath.nextCourseMathCS();
-     }
-     if(temp[0] != 1.0) {
-       results[2] = mcdMAS.nextCourseMAS();
-     }
-     return results;
-   }
-
-      
+     return nextCourses;
+   }  
   }
