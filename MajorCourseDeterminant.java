@@ -1,27 +1,36 @@
 import java.util.*;
-import java.io.*;
-import java.util.Scanner;
-import java.util.Stack;
-import javafoundations.*;
-import java.lang.*;
+  import java.io.*;
+  import java.util.Scanner;
+  import javafoundations.*;
+  import java.lang.*;
+  /*
+  * this class contains the important  methods that are used
+  * to calculate the next course and percentage of completion based off of 
+  * the input
+  */
+  public class MajorCourseDeterminant {
 
-public class MajorCourseDeterminant {
+    // instance variables
+
+    private LinkedList<String> requiredCourses; // for math and cs
+    private CourseTrajectories<String> major;
+    private LinkedList<String> requiredMASIntroCourses;
+    private LinkedList<String> requiredMASArtCourses;
+    private LinkedList<String> requiredMASCSCourses;
+
+    private LinkedList<String> userCourses;
+
+    private final double numCSCoursesForMajor = 11.0;
+    private final double numMathCoursesForMajor = 10.0;
+    private final double numMASCoursesForMajor = 12.0;
   
-  // instance variables
-  
-  private LinkedList<String> requiredCourses; // for math and cs
-  private CourseTrajectories<String> major;
-  private LinkedList<String> requiredMASIntroCourses;
-  private LinkedList<String> requiredMASArtCourses;
-  private LinkedList<String> requiredMASCSCourses;
-  
-  private LinkedList<String> userCourses;
-  
-  private final double numCSCoursesForMajor = 11.0;
-  private final double numMathCoursesForMajor = 10.0;
-  private final double numMASCoursesForMajor = 12.0;
-  
-  // constructor for math and cs
+  // constructor for class 
+    /* sets up an instance of the class based off of variables that will be used through out 
+    * the rest of the class
+    *@param major takes in the graph of the major
+    *takes in the completed courses in that major field
+    *
+    */
   public MajorCourseDeterminant(CourseTrajectories<String> major, LinkedList<String> completedCoursesByMajor) {
     this.major = major;
     userCourses = completedCoursesByMajor;
@@ -31,8 +40,12 @@ public class MajorCourseDeterminant {
     requiredMASCSCourses = new LinkedList<String>();
   }
   
-  
-  // fills CS or Math linkedlists from written text files
+  /*
+  * populates the linked list of required courses based on req for major
+  *@param requiredCoursesFile takes in name of course containing 
+  *requirements for that major
+  * not return only setting
+  */
   public void allCSMath(String requiredCoursesFile) {
 
     // fills requiredCourses
@@ -50,8 +63,12 @@ public class MajorCourseDeterminant {
     }
     }
   
-  
-  // fills MAS linkedlists from written text files
+  /*
+  * populates the  linked list based off of 3 distinct requirements
+  *@param introCoursesFile all are contains requirements pertaining to specified label
+  *@param csCourses
+  *@param artCourses
+  */
   public void allMAS(String introCoursesFile, String csCourses, String artCourses) {
     
     // fills introMASCourses
@@ -97,7 +114,11 @@ public class MajorCourseDeterminant {
       }
       
     }
- 
+ /*
+ * method calculates percentage of cs major 
+ * @return double based off of cs major requirements
+ *
+ */
    public double csMajor(){
      
      //allCSMath("CSRequired.txt");
@@ -138,6 +159,11 @@ public class MajorCourseDeterminant {
       return (count/numCSCoursesForMajor);
     }
   
+   /*
+ * method calculates percentage of math major 
+ * @return double based off of math major requirements
+ *
+ */
   public double mathMajor(LinkedList<String> math) {
     
 
@@ -188,7 +214,11 @@ public class MajorCourseDeterminant {
     }
     return (counter + num200s.size() + num300s.size())/numMathCoursesForMajor;
   }
-  
+   /*
+ * method calculates percentage of masMajor major 
+ * @return double based off of cs major requirements
+ *
+ */
    public double masMajor(LinkedList<String> mas) {
 
     //allMAS("MASRequired.txt", "MASCS.txt", "MASARTS.txt");
@@ -226,7 +256,12 @@ public class MajorCourseDeterminant {
     }
     return (intro + num300s + csCourses + artCourses)/numMASCoursesForMajor;
    }
-
+  
+  /*
+  * method sorts incoming data in ascending order
+  * @param linkedlist containing course names
+  */
+    
   public void selectionSort (LinkedList<String> data) {
       int min;
       for (int index = 0; index < data.size()-1; index++) {
@@ -240,6 +275,12 @@ public class MajorCourseDeterminant {
       }
   }
   
+  /* 
+  * help method for selectionSort
+  * @param takes in linkedlist of courses
+  * @param takes in 2 indices that need to switched
+  */
+    
   public void swap (LinkedList<String> data, int index1, int index2) {
        String index1Data = data.get(index1);
        String index2Data = data.get(index2);
@@ -249,7 +290,11 @@ public class MajorCourseDeterminant {
        data.add(index2, index1Data);
    }
   
-  
+  /*
+  *method that goes through the selected/separated courses and determines what courses are left to take 
+  * then it returns the courses left to take, giving priority to those that fulfill requirements
+  *@return string subject and number of course
+  */
    public String nextCourseMathCS() {
 
     CourseTrajectories<String> temp = major;
@@ -294,7 +339,11 @@ public class MajorCourseDeterminant {
 
     return course;
   }
-
+/*
+* method that return linked list which adjust requirement based off special cases where student skips courses that are
+*prereq and major req
+*@return update linked list of requirements that are left
+*/
    public LinkedList<String> adjReqMet(){
     LinkedList<String> adjustedReq = requiredCourses;
     for(int i = 0; i<userCourses.size(); i++){
@@ -311,6 +360,10 @@ public class MajorCourseDeterminant {
     }
     return adjustedReq;
   }
+    /*
+    *method that handles mas differently because of different course requirements
+    *@return next course as string
+    */
     public String nextCourseMAS() {   CourseTrajectories<String> temp = major;
 
     LinkedList<String> selected = userCourses;//both temp
@@ -334,7 +387,10 @@ public class MajorCourseDeterminant {
   }
 
 //CourseTrajectories
-  
+  /*
+ *
+ *TEST CASES**********************
+ */
   public static void main(String [] args) throws FileNotFoundException, GraphCycleException {
     
     LinkedList<String> userMathCourses = new LinkedList<String>();
